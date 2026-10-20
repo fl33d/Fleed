@@ -1,26 +1,49 @@
-# fleed
+# Fleed
 
-A portfolio that starts completely empty. Every line on the page is a text box styled like the finished design. Click and type your name, role, story, projects, experience and contact links straight into the layout, then publish it to a shareable link.
+A minimal, editable portfolio builder with a calm, ink-inspired design.
 
-The look is quiet and minimal, with a zen feel: warm sumi-ink tones, lots of space, and one faint ensō circle that slowly breathes behind the page. The motion is gentle. An ensō draws itself around the wordmark when the page opens, sections fade in as you scroll, the name drifts in letter by letter, skills pass by in a slow ticker, and a calm dock holds the Edit/Preview toggle, accent swatches and a completion ring.
+**[Live site](https://fleed.online/)**
+
+Fleed lets you build a personal portfolio directly on the page. Edit your name, role, story, projects, experience, skills, and contact links in place, preview the result, then publish it to a shareable URL.
 
 ## Features
 
-- **Edit in place**: the editor at `/` is the portfolio itself. Empty fields show soft, breathing placeholders.
-- **Preview**: switch to see the page exactly as visitors will. Empty sections are hidden.
-- **Accent colours**: six muted presets (sage, clay, mist, sand, blossom, stone) recolour the whole page.
-- **Autosave**: drafts are saved to the browser as you type.
-- **Publish & update**: one click stores the portfolio in Netlify Blobs and gives you a `/p/<id>` link. Your browser keeps a private edit token, so **Update** pushes changes to the same link.
+- **Edit in place** — build your portfolio by editing text directly in the layout.
+- **Live preview** — switch between editing and visitor view; empty sections stay hidden.
+- **Colour themes** — choose from six muted accents: sage, clay, mist, sand, blossom, and stone.
+- **Autosaved drafts** — changes are saved in your browser as you work.
+- **Publish and update** — publish a portfolio to a shareable `/p/<id>` URL and update that same page later.
+- **Subtle motion** — restrained animations, a breathing ensō, scroll reveals, and a skills ticker.
 
-## Tech
+## Tech stack
 
-TanStack Start (React 19), Tailwind CSS 4 plus custom CSS animations, Netlify Blobs for published pages, deployed on Netlify.
+- React 19
+- TanStack Start
+- TypeScript
+- Tailwind CSS 4
+- Netlify Blobs
+- Netlify
 
-## Running locally
+## Run locally
+
+### Requirements
+
+Install Node.js, pnpm, and the Netlify CLI.
 
 ```bash
 pnpm install
 netlify dev
 ```
 
-Use `netlify dev` rather than plain `vite dev` so Netlify Blobs is emulated locally.
+Run the app with `netlify dev` rather than plain `vite dev` so the Netlify development environment can emulate Netlify Blobs.
+
+## Project structure
+
+- `src/components/portfolio/` — portfolio layout and editing components
+- `src/components/ui/` — reusable interface components
+- `src/routes/` — application routes and API endpoints
+- `src/lib/` — shared utilities and portfolio types
+
+## Status
+
+Fleed is an actively developed personal project. Feedback and suggestions are welcome.
