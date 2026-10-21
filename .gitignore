@@ -6,3 +6,12 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Cloudflare local files
+.wrangler/
+.dev.vars*
+
+# Temporary backups
+*.bak
+
+worker-configuration.d.ts

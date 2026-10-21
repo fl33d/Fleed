@@ -1,0 +1,20 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "fleed",
+	"workers_dev": true,
+	"main": "@tanstack/react-start/server-entry",
+	"compatibility_date": "2026-10-21",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "fleed_portfolios",
+			"database_name": "fleed-portfolios",
+			"database_id": "c9d8efeb-be77-4cf9-a567-2ee6ee9864c3"
+		}
+	]
+}
