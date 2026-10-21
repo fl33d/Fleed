@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Cloudflare Worker types
+        run: pnpm exec wrangler types
+
       - name: Type-check
         run: pnpm typecheck
 
