@@ -13,6 +13,10 @@
 
 Test creating a draft, publishing, viewing `/p/<id>`, updating with the original edit token, and refreshing public content.
 
+## Hosting status
+
+As of 2026-11-15, GitHub Actions observed Netlify headers from `fleed.online`. See [the domain cutover runbook](DOMAIN_CUTOVER.md) before claiming Cloudflare production hosting.
+
 ## Deployment
 
 - Source of truth: GitHub `fl33d/Fleed`, branch `main`.

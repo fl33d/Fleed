@@ -24,3 +24,5 @@ jobs:
           node-version: 24
       - name: Check HTTPS and Fleed branding
         run: node scripts/check-live-site.mjs
+      - name: Diagnose DNS and origin hosts (read-only)
+        run: node scripts/diagnose-hosting.mjs

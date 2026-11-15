@@ -5,7 +5,7 @@
 Fleed is a full-stack web application for creating, previewing and publishing personal portfolios directly on the page, with no complicated dashboard.
 
 **Public project:** https://github.com/fl33d/Fleed
-**Intended custom domain:** https://fleed.online/ (check the live deployment independently)
+**Intended Cloudflare custom domain:** https://fleed.online/ (**as of 15 November 2026, response headers still identified Netlify**; see [cutover plan](docs/DOMAIN_CUTOVER.md)).
 
 ## Working features
 

@@ -20,6 +20,13 @@ try {
     netlify_request_header_present: Boolean(response.headers.get('x-nf-request-id')),
   }
   console.log(JSON.stringify(summary, null, 2))
+  if (summary.netlify_request_header_present) {
+    console.warn('LEGACY HOST DETECTED: fleed.online is responding via Netlify, not the intended Cloudflare Worker. See docs/DOMAIN_CUTOVER.md.')
+  }
+  if (process.env.FLEED_REQUIRE_CLOUDFLARE === '1' && !summary.cloudflare_ray_present) {
+    console.error('Cloudflare hosting verification failed: CF-Ray header absent.')
+    process.exitCode = 1
+  }
   if (!response.ok || !summary.contains_fleed_branding) {
     console.error('Fleed smoke check failed. Inspect DNS, Cloudflare Workers Builds and the target response.')
     process.exitCode = 1

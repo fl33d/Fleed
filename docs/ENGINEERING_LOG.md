@@ -70,3 +70,12 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 
 - Commit `925cfd9` failed its first CI run because Node's unqualified `node --test` discovered `tools/fleed-mcp/src/self-test.ts` before the separate MCP dependencies were installed. The 4 portfolio tests passed.
 - Changed the website's test script to discover only `tests/*.test.mjs`. MCP tests are run separately after installing that package, keeping independent test suites correctly scoped.
+
+### Verified current checks and hosting mismatch (2026-11-15)
+
+- GitHub Actions `Fleed CI` run 43742200084: **successful** (app tests/build/typecheck and standalone MCP install/typecheck/stdio protocol self-test). The MCP protocol is validated in CI; cloud provider API calls have not been tested using an authenticated token.
+- GitHub Actions `Fleed Live Site Health` run 43742200086: HTTP 200, branding found; response header `server: Netlify`, Netlify request ID present, Cloudflare CF-Ray absent. **The custom domain still serves Netlify as of this check.**
+- Added read-only DNS/HTTP origin diagnostics for custom and Workers.dev hostnames to identify the likely live Worker before any domain changes.
+- Wrote `DOMAIN_CUTOVER.md` with pre-flight checks, approval-dependent dashboard operations, verification and rollback requirements.
+- Made legacy-origin detection explicit in routine health logs; use `FLEED_REQUIRE_CLOUDFLARE=1` only after verified cutover to enforce Cloudflare headers.
+- No DNS, billing, D1 or production deployment was changed.
