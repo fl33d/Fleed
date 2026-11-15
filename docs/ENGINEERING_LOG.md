@@ -106,3 +106,7 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Added JSON draft export/import in the editor customisation panel; export intentionally excludes the sensitive published edit token.
 - Import requires explicit confirmation. The published page changes only if the user subsequently selects Update.
 - Not merged to production; CI must pass before shipping.
+
+### CI follow-up — portable backup UI
+
+- CI run 43750305348 failed TypeScript at `Customize.tsx:71` due to a conflicting `append(...)` signature in the project types. Replaced it with `appendChild(...)`, which has the standard DOM node contract. A fresh CI run must verify the correction.
