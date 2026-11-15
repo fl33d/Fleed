@@ -79,3 +79,15 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Wrote `DOMAIN_CUTOVER.md` with pre-flight checks, approval-dependent dashboard operations, verification and rollback requirements.
 - Made legacy-origin detection explicit in routine health logs; use `FLEED_REQUIRE_CLOUDFLARE=1` only after verified cutover to enforce Cloudflare headers.
 - No DNS, billing, D1 or production deployment was changed.
+
+### Origin diagnostics: verified 2026-11-15 17:42 UTC
+
+- GitHub Actions health run 43742651116 passed and returned these read-only results:
+  - `https://fleed.online/`: HTTP 200, `server: Netlify`, Netlify request header present, CF-Ray absent.
+  - `https://www.fleed.online/`: HTTP 301 → `https://fleed.online/`, served by Netlify.
+  - `https://fleed.fleed.workers.dev/`: HTTP 200, `server: cloudflare`, CF-Ray present, no Netlify header. **Confirmed active Worker hostname.**
+  - `https://fleed.workers.dev/`: fetch failed; **not** the current reachable Worker URL.
+  - `https://fleed.store/`: HTTP 200, origin unclear from returned headers.
+- DNS `NS` query: `dns1.p04.nsone.net`, `dns2.p04.nsone.net`, `dns3.p04.nsone.net`, `dns4.p04.nsone.net`, demonstrating the domain is not currently delegated to Cloudflare DNS.
+- A read-only invalid-portfolio GET against the known Worker URL has been added to the diagnostic script to exercise the public D1 read path; the result is not yet verified.
+- **No DNS, domain, remote database, Worker deployment or Netlify changes were performed.**

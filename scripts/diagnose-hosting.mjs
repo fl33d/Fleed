@@ -7,6 +7,8 @@ const targets = [
   'https://fleed.store/',
   'https://fleed.fleed.workers.dev/',
   'https://fleed.workers.dev/',
+  // A deliberately invalid public portfolio ID safely exercises the read-only D1 route.
+  'https://fleed.fleed.workers.dev/p/000000000000',
 ]
 
 async function inspectURL(url) {

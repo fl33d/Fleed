@@ -10,6 +10,17 @@ GitHub Actions `Fleed Live Site Health` run 43742200086 returned:
 
 **Conclusion:** the custom domain `fleed.online` currently returns Netlify-origin response headers, despite this repository being configured for Cloudflare Workers. Repo migration and hostname cutover are different tasks. Do not describe the custom domain as Cloudflare-hosted until verified.
 
+## Confirmed network findings
+
+- `fleed.online`: currently Netlify HTTP 200.
+- `www.fleed.online`: Netlify HTTP 301 to the apex hostname.
+- `fleed.fleed.workers.dev`: verified Cloudflare HTTP 200 with CF-Ray header.
+- `fleed.workers.dev`: not reachable in the diagnostic.
+- `fleed.store`: HTTP 200; host origin not verified.
+- DNS nameservers: `dns1.p04.nsone.net` through `dns4.p04.nsone.net` (not Cloudflare).
+
+**We have confirmed the Worker is reachable independently. The remaining issue is routing and domain delegation, not the complete absence of a Cloudflare deployment.**
+
 ## Diagnosis before changing DNS
 
 1. Review the GitHub Actions `Fleed Live Site Health` logs. `scripts/diagnose-hosting.mjs` tests current hostnames and reads authoritative DNS nameservers. Interpret these as observational data, not DNS config write permissions.
