@@ -91,3 +91,9 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - DNS `NS` query: `dns1.p04.nsone.net`, `dns2.p04.nsone.net`, `dns3.p04.nsone.net`, `dns4.p04.nsone.net`, demonstrating the domain is not currently delegated to Cloudflare DNS.
 - A read-only invalid-portfolio GET against the known Worker URL has been added to the diagnostic script to exercise the public D1 read path; the result is not yet verified.
 - **No DNS, domain, remote database, Worker deployment or Netlify changes were performed.**
+
+### Final run 2026-11-15 ~17:45 UTC
+
+- GitHub Actions `Fleed CI` run 43742793959: **success**. Existing app installation, type generation, typechecking, regression tests, production build, standalone MCP install/typecheck and MCP stdio self-test all completed.
+- GitHub Actions `Fleed Live Site Health` run 43742793969: **success**. Its diagnostics additionally requested `https://fleed.fleed.workers.dev/p/000000000000` and received HTTP 404 with Cloudflare server and CF-Ray headers — expected for an invalid portfolio ID. This is a non-mutating route check, not proof that database writes or authenticated publishing work.
+- PR #1 remains a draft based on `main`. All code/doc automation changes are on `improve/cloudflare-security-mcp-2026-11-15`, not deployed. `fleed.online` still presents Netlify origin headers.
