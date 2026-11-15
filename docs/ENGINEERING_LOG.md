@@ -65,3 +65,8 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Updated outdated checkout/setup-node Action versions to 7 to address Node 20 deprecation warnings.
 - Added an end-to-end MCP stdio self-test that spawns the server, negotiates MCP, lists tools and invokes `get_fleed_info`. The result must be checked in the next CI run.
 - Added response-header reporting for CF-Ray and Netlify request IDs; these are hints, not full proof of origin hosting.
+
+### CI correction — explicit test discovery
+
+- Commit `925cfd9` failed its first CI run because Node's unqualified `node --test` discovered `tools/fleed-mcp/src/self-test.ts` before the separate MCP dependencies were installed. The 4 portfolio tests passed.
+- Changed the website's test script to discover only `tests/*.test.mjs`. MCP tests are run separately after installing that package, keeping independent test suites correctly scoped.
