@@ -50,3 +50,10 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Initial PR run 43741370168 **failed in root TypeScript checking** because the root `tsconfig.json` included `tools/fleed-mcp/src/index.ts`, while its standalone SDK packages were not installed at the application root.
 - Updated the root `tsconfig.json` to exclude the independently managed MCP package, which has its own TypeScript configuration.
 - Await a fresh GitHub Actions run to verify the correction. No claim of success is made before that run completes.
+
+### Automation added to the review branch
+
+- Extended CI to install/typecheck the standalone MCP tool after verifying the web application.
+- Added a manual, pull-request and daily (08:17 UTC) live-homepage HTTP smoke check. It checks HTTP success and Fleed branding; it cannot prove D1 writes work.
+- Added weekly Dependabot proposals for app dependencies, MCP dependencies and GitHub Actions. These open pull requests rather than deploying dependencies automatically.
+- The live website is not yet confirmed from this session; health checks may identify a DNS/Workers deployment problem requiring Cloudflare dashboard access.

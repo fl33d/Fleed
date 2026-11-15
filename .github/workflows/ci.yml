@@ -47,3 +47,9 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Install standalone MCP tool dependencies
+        run: pnpm --dir tools/fleed-mcp install --no-frozen-lockfile
+
+      - name: Type-check standalone MCP server
+        run: pnpm --dir tools/fleed-mcp typecheck

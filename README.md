@@ -58,6 +58,8 @@ Wrangler configuration lives in `wrangler.jsonc`. Production D1 is **not** your 
 - [Release and deployment checklist](docs/OPERATIONS.md)
 - [Read-only Fleed MCP development tools](tools/fleed-mcp/README.md)
 
+GitHub Actions also contains an optional/scheduled public-homepage health check. Dependabot proposes weekly dependency updates for review; neither feature deploys the site independently.
+
 ## Security and limitations
 
 Edit tokens are generated randomly and only their hashes are stored in D1. Browser storage keeps the token used to update a published portfolio, so clearing browser storage may lose access. No accounts or recovery flow exist yet. Public link fields are checked for safe protocols, and uploaded-image URLs are restricted to an internal `/img/<key>` pattern.
