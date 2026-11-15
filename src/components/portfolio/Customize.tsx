@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { ChevronDown, RotateCcw, SlidersHorizontal } from 'lucide-react'
+import { ChevronDown, Download, RotateCcw, SlidersHorizontal, Upload } from 'lucide-react'
+import { toast } from 'sonner'
 
 import {
   ACCENTS,
@@ -7,6 +8,7 @@ import {
   DEFAULT_THEME,
   FONTS,
   PALETTES,
+  normalizePortfolio,
   type FontKey,
   type PaletteKey,
   type Portfolio,
@@ -33,6 +35,7 @@ export function Customize({
 }) {
   const [open, setOpen] = useState(false)
   const root = useRef<HTMLDivElement>(null)
+  const backupInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!open) return
@@ -57,6 +60,41 @@ export function Customize({
       hidden: d.hidden.includes(key) ? d.hidden.filter((k) => k !== key) : [...d.hidden, key],
     }))
   const isCustomAccent = !ACCENTS.includes(data.accent)
+
+  const downloadBackup = () => {
+    // Deliberately exclude the edit token, which must not be exposed in portable data.
+    const blob = new Blob([JSON.stringify(normalizePortfolio(data), null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'fleed-portfolio-backup.json'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+    toast.success('Draft downloaded as JSON.')
+  }
+
+  const importBackup = async (file?: File) => {
+    if (!file) return
+    if (file.size > 256_000) {
+      toast.error('Backup too large (256 KB maximum).')
+      return
+    }
+    try {
+      const parsed: unknown = JSON.parse(await file.text())
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed) ||
+          !('name' in parsed) || typeof parsed.name !== 'string' ||
+          !('projects' in parsed) || !Array.isArray(parsed.projects)) {
+        throw new Error('Not a Fleed portfolio backup')
+      }
+      if (!window.confirm('Replace this draft with the selected backup? Your published page will change only if you press Update.')) return
+      onChange(() => normalizePortfolio(parsed))
+      toast.success('Draft imported. Review it before publishing.')
+    } catch {
+      toast.error('This file is not a valid Fleed portfolio backup.')
+    }
+  }
 
   return (
     <div ref={root} className="cz">
@@ -186,6 +224,31 @@ export function Customize({
             </div>
           </Group>
 
+          <Group title="Draft backup">
+            <div className="flex flex-col gap-1">
+              <button type="button" className="cz-reset" onClick={downloadBackup}>
+                <Download className="size-3" /> Download JSON backup
+              </button>
+              <button type="button" className="cz-reset" onClick={() => backupInput.current?.click()}>
+                <Upload className="size-3" /> Import JSON backup
+              </button>
+              <input
+                ref={backupInput}
+                type="file"
+                accept="application/json,.json"
+                className="hidden"
+                aria-label="Choose a Fleed portfolio JSON backup"
+                onChange={async (event) => {
+                  const file = event.currentTarget.files?.[0]
+                  event.currentTarget.value = ''
+                  await importBackup(file)
+                }}
+              />
+              <p className="text-xs opacity-50 leading-relaxed">
+                Backups contain your portfolio content, not the private edit token needed to update an existing published link.
+              </p>
+            </div>
+          </Group>
           <button
             className="cz-reset"
             onClick={() =>

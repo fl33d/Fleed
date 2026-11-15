@@ -7,6 +7,15 @@
     "cloudflare-docs": {
       "type": "http",
       "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "fleed-local": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": [
+        "--dir",
+        "tools/fleed-mcp",
+        "start"
+      ]
     }
   }
 }

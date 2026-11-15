@@ -2,6 +2,7 @@
 import { env } from 'cloudflare:workers'
 
 import type { Portfolio } from '@/lib/portfolio'
+import { classifyEditIntent, hashesMatch, isPortfolioId } from './portfolio-auth'
 
 const hash = async (token: string): Promise<string> => {
   const bytes = new TextEncoder().encode(token)
@@ -20,19 +21,7 @@ const randomHex = (byteLength: number): string => {
     .join('')
 }
 
-const tokensMatch = (a: string, b: string): boolean => {
-  if (a.length !== b.length) return false
-
-  let difference = 0
-  for (let i = 0; i < a.length; i++) {
-    difference |= a.charCodeAt(i) ^ b.charCodeAt(i)
-  }
-
-  return difference === 0
-}
-
-export const validId = (id: unknown): id is string =>
-  typeof id === 'string' && /^[a-z0-9]{6,32}$/.test(id)
+export const validId = isPortfolioId
 
 type StoredPortfolio = {
   portfolio_json: string
@@ -47,29 +36,30 @@ export async function savePortfolio(
 ): Promise<{ id: string; token: string }> {
   const db = env.fleed_portfolios
 
-  if (validId(id) && typeof token === 'string') {
+  const intent = classifyEditIntent(id, token)
+  if (intent.kind === 'invalid') {
+    throw new Error('Edit permission missing or invalid. Your original portfolio was not changed.')
+  }
+
+  if (intent.kind === 'update') {
     const existing = await db
-      .prepare(
-        'SELECT portfolio_json, token_hash, updated_at FROM portfolios WHERE id = ?',
-      )
-      .bind(id)
-      .first<StoredPortfolio>()
+      .prepare('SELECT token_hash FROM portfolios WHERE id = ?')
+      .bind(intent.id)
+      .first<Pick<StoredPortfolio, 'token_hash'>>()
 
-    if (existing && tokensMatch(existing.token_hash, await hash(token))) {
-      await db
-        .prepare(
-          'UPDATE portfolios SET portfolio_json = ?, updated_at = ? WHERE id = ? AND token_hash = ?',
-        )
-        .bind(
-          JSON.stringify(portfolio),
-          new Date().toISOString(),
-          id,
-          existing.token_hash,
-        )
-        .run()
-
-      return { id, token }
+    if (!existing || !hashesMatch(existing.token_hash, await hash(intent.token))) {
+      throw new Error('Edit permission missing or invalid. Your original portfolio was not changed.')
     }
+
+    const updated = await db
+      .prepare('UPDATE portfolios SET portfolio_json = ?, updated_at = ? WHERE id = ? AND token_hash = ?')
+      .bind(JSON.stringify(portfolio), new Date().toISOString(), intent.id, existing.token_hash)
+      .run()
+
+    if (!updated.success || updated.meta.changes !== 1) {
+      throw new Error('Portfolio update failed. Your original portfolio was not changed.')
+    }
+    return { id: intent.id, token: intent.token }
   }
 
   const newId = randomHex(6)

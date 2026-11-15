@@ -1,66 +1,70 @@
 # Fleed
 
-**A calm, considered space to build and share your portfolio.**
+**A calm, editable portfolio builder — powered by Cloudflare Workers and D1.**
 
-Fleed is a personal portfolio builder designed to make presenting your work feel simple. Create your portfolio directly on the page, shape it around your experience, and publish it at a shareable link — without wrestling with a complicated editor.
+Fleed is a full-stack web application for creating, previewing and publishing personal portfolios directly on the page, with no complicated dashboard.
 
-**Live site:** [fleed.online](https://fleed.online/)
+**Public project:** https://github.com/fl33d/Fleed
+**Intended Cloudflare custom domain:** https://fleed.online/ (**as of 15 November 2026, response headers still identified Netlify**; see [cutover plan](docs/DOMAIN_CUTOVER.md)).
 
-## What you can do
+## Working features
 
-- **Edit as you go** — update your name, role, introduction, projects, experience, skills, and contact links directly in the layout.
-- **Preview before publishing** — switch between editing and visitor views to see how your portfolio will look.
-- **Make it yours** — choose from six understated colour themes: sage, clay, mist, sand, blossom, and stone.
-- **Keep your draft** — edits are saved in your browser as you work.
-- **Publish and update** — share your portfolio through a dedicated link and return to update it later.
-- **Enjoy the details** — subtle transitions, scroll reveals, and a moving skills ticker bring the page to life without getting in the way.
+- In-place editing for identity, skills, projects, experience, contact details and custom sections.
+- Browser-saved drafts with optional JSON export/import; separate visitor preview and editor views.
+- Five core colour palettes, multiple typography choices and adjustable layout.
+- Shareable published portfolio links (`/p/<id>`).
+- Cloudflare D1 persistence with SHA-256-hashed edit credentials for subsequent updates; invalid update credentials are rejected rather than silently creating a replacement portfolio.
+- Responsive React interface with accessibility and reduced-motion considerations.
 
-## Design approach
+## Current limitations
 
-Fleed aims to keep the focus on the person and their work. Its visual style uses restrained colour, clear typography, generous spacing, and subtle motion to make portfolios feel personal without becoming distracting.
+- **Photo uploads are disabled:** the upload endpoint returns 503 and the image endpoint returns 404. R2 is not yet configured in `wrangler.jsonc`.
+- **Do not imply an AI feature exists:** MCP tooling in `tools/fleed-mcp/` is a developer-facing read-only integration; it does not generate portfolio content.
+- The production custom-domain/DNS status cannot be verified from the source repository alone.
 
-## Built with
+## Tech stack
 
-- React 19 and TypeScript
-- TanStack Start
-- Tailwind CSS 4
-- Cloudflare Workers
-- Cloudflare D1
+| Layer | Technology |
+| --- | --- |
+| Web UI | React 19, TypeScript, Tailwind CSS 4 |
+| Full-stack framework | TanStack Start + Router |
+| Build | Vite, pnpm |
+| Runtime | Cloudflare Workers |
+| Database | Cloudflare D1 (SQLite) |
+| CI | GitHub Actions: dependency install, Wrangler type generation, tests, typecheck, build |
+| Deployment | Cloudflare Workers Builds (Git integration on `main`) |
+| Development integrations | Cloudflare MCP in VS Code; standalone local Fleed MCP server |
 
-## Getting started
+## Local development
 
-### Requirements
+Install Node.js and pnpm:
 
-Install [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/).
+    pnpm install --frozen-lockfile
+    pnpm dev
 
-### Install dependencies
+Checks:
 
-```bash
-pnpm install
-```
+    pnpm exec wrangler types
+    pnpm test
+    pnpm typecheck
+    pnpm build
 
-### Start the development server
+Wrangler configuration lives in `wrangler.jsonc`. Production D1 is **not** your local database; local Wrangler development uses local state by default. Never apply migrations remotely without verifying backups and impact.
 
-```bash
-pnpm dev
-```
+## Architecture and operations
 
-### Build for production
+- [Product direction and user experience](docs/PRODUCT_DIRECTION.md)
+- [System architecture](docs/ARCHITECTURE.md)
+- [Engineering log and decisions](docs/ENGINEERING_LOG.md)
+- [Portfolio case study and CV evidence](docs/CASE_STUDY.md)
+- [Secure media feature design (not deployed)](docs/MEDIA_DESIGN.md)
+- [Release and deployment checklist](docs/OPERATIONS.md)
+- [Read-only Fleed MCP development tools](tools/fleed-mcp/README.md)
 
-```bash
-pnpm build
-```
+GitHub Actions also contains an optional/scheduled public-homepage health check. Dependabot proposes weekly dependency updates for review; neither feature deploys the site independently.
 
-Cloudflare Worker configuration is maintained in `wrangler.jsonc`.
+## Security and limitations
 
-## Project structure
+Edit tokens are generated randomly and only their hashes are stored in D1. Browser storage keeps the token used to update a published portfolio, so clearing browser storage may lose access. No accounts or recovery flow exist yet. Public link fields are checked for safe protocols, and uploaded-image URLs are restricted to an internal `/img/<key>` pattern.
 
-- `src/components/portfolio/` — portfolio layout and editing components
-- `src/components/ui/` — reusable interface components
-- `src/routes/` — application routes and API endpoints
-- `src/lib/` — shared utilities and portfolio types
-- `wrangler.jsonc` — Cloudflare Worker and D1 configuration
-
-## Feedback
-
-Fleed is an actively developed personal project. Feedback, ideas, and suggestions are welcome — especially from people using it to create or review a portfolio.
+Fleed is a learning project under active development. Features and third-party integrations are documented accurately rather than presented as complete before they are tested.
