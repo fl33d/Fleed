@@ -119,3 +119,10 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Wrote `docs/CASE_STUDY.md`: interview/CV-ready evidence with honest unshipped-feature boundaries.
 - Added a visible GitHub Actions warning annotation when `fleed.online` still presents Netlify origin headers, without treating basic uptime as failed.
 - Current review branch remains draft; no DNS, Worker production deployment, billing, R2 or D1 remote operations performed.
+
+### Final verification before handoff (2026-11-15)
+
+- GitHub Actions `Fleed CI` run **43750996684 passed** after the new edit-token validation, JSON backup UI and npm package name clean-up. Steps included Worker type generation, TypeScript, regression tests, Vite build and MCP stdio test.
+- GitHub Actions `Fleed Live Site Health` run **43750996697 passed at HTTP level** but emitted a **GitHub warning** for legacy hosting; `fleed.online` still responds `server: Netlify`, CF-Ray absent. Cloudflare Worker remains reachable via its Workers.dev URL.
+- PR #1 updated with accurate claims and linked work items. Issue #4 marked update-credential/UX fixes as implemented on the *draft branch*, with recovery/E2E/abuse controls still pending.
+- No merge, production deployment, billed-resource change, DNS edit, R2 activation, secret access or remote D1 operation was performed.
