@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["tools/fleed-mcp/**"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",

@@ -44,3 +44,9 @@
 8. Add only genuinely useful user-facing AI features; never mislabel marketing claims as functional integrations.
 
 Old Git history will still contain prior Netlify references; removing a tracked file from current code does not rewrite history.
+
+### CI feedback and fix
+
+- Initial PR run 43741370168 **failed in root TypeScript checking** because the root `tsconfig.json` included `tools/fleed-mcp/src/index.ts`, while its standalone SDK packages were not installed at the application root.
+- Updated the root `tsconfig.json` to exclude the independently managed MCP package, which has its own TypeScript configuration.
+- Await a fresh GitHub Actions run to verify the correction. No claim of success is made before that run completes.
