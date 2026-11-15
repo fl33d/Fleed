@@ -42,5 +42,8 @@ jobs:
       - name: Type-check
         run: pnpm typecheck
 
+      - name: Run regression tests
+        run: pnpm test
+
       - name: Build
         run: pnpm build
