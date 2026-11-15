@@ -20,6 +20,7 @@ Requires Node.js 20+ and pnpm:
 
     pnpm --dir tools/fleed-mcp install
     pnpm --dir tools/fleed-mcp typecheck
+    pnpm --dir tools/fleed-mcp test
     pnpm --dir tools/fleed-mcp start
 
 VS Code's `.vscode/mcp.json` contains a `fleed-local` stdio entry. Start the server through a compatible MCP client rather than expecting terminal output; stdout carries protocol messages.
@@ -40,7 +41,7 @@ Without credentials, `get_fleed_info` and `get_site_status` still work, and priv
 
 Run `pnpm --dir tools/fleed-mcp typecheck`, connect it in VS Code, call `get_fleed_info`, then validate authorised calls. If the token lacks permissions, fix the scope rather than supplying a global Cloudflare API key.
 
-This code has not been installed or executed in the current remote audit environment. Do not claim a successful runtime integration until an MCP client has used the tools and returned real responses.
+The `test` script spawns the MCP server over stdio and invokes `get_fleed_info`. GitHub Actions validates the protocol when the test passes; privileged Cloudflare API calls still require their own authenticated tests.
 
 SDK reference: https://ts.sdk.modelcontextprotocol.io/v2/get-started/first-server
 Cloudflare API reference: https://developers.cloudflare.com/api/resources/d1/subresources/database/methods/query/

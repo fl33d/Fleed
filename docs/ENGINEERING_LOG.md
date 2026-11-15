@@ -57,3 +57,11 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - Added a manual, pull-request and daily (08:17 UTC) live-homepage HTTP smoke check. It checks HTTP success and Fleed branding; it cannot prove D1 writes work.
 - Added weekly Dependabot proposals for app dependencies, MCP dependencies and GitHub Actions. These open pull requests rather than deploying dependencies automatically.
 - The live website is not yet confirmed from this session; health checks may identify a DNS/Workers deployment problem requiring Cloudflare dashboard access.
+
+### Verified 2026-11-15 CI results
+
+- GitHub Actions `Fleed CI` run 43741781034 **passed** application typecheck, regression tests, build and standalone MCP TypeScript typecheck.
+- GitHub Actions `Fleed Live Site Health` run 43741781131 **passed**, returning HTTP 200 from `https://fleed.online/` and Fleed branding in the response.
+- Updated outdated checkout/setup-node Action versions to 7 to address Node 20 deprecation warnings.
+- Added an end-to-end MCP stdio self-test that spawns the server, negotiates MCP, lists tools and invokes `get_fleed_info`. The result must be checked in the next CI run.
+- Added response-header reporting for CF-Ray and Netlify request IDs; these are hints, not full proof of origin hosting.

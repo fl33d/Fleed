@@ -7,6 +7,9 @@
     pnpm test
     pnpm typecheck
     pnpm build
+    pnpm --dir tools/fleed-mcp install --no-frozen-lockfile
+    pnpm --dir tools/fleed-mcp typecheck
+    pnpm --dir tools/fleed-mcp test
 
 Test creating a draft, publishing, viewing `/p/<id>`, updating with the original edit token, and refreshing public content.
 

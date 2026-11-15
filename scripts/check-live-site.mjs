@@ -15,6 +15,9 @@ try {
     status: response.status,
     elapsed_ms: Date.now() - started,
     contains_fleed_branding: /fleed/i.test(body),
+    server_header: response.headers.get('server'),
+    cloudflare_ray_present: Boolean(response.headers.get('cf-ray')),
+    netlify_request_header_present: Boolean(response.headers.get('x-nf-request-id')),
   }
   console.log(JSON.stringify(summary, null, 2))
   if (!response.ok || !summary.contains_fleed_branding) {
