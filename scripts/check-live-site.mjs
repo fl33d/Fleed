@@ -21,7 +21,7 @@ try {
   }
   console.log(JSON.stringify(summary, null, 2))
   if (summary.netlify_request_header_present) {
-    console.warn('LEGACY HOST DETECTED: fleed.online is responding via Netlify, not the intended Cloudflare Worker. See docs/DOMAIN_CUTOVER.md.')
+    console.warn('::warning title=Legacy hosting origin::fleed.online is responding through Netlify, not the intended Cloudflare Worker. See docs/DOMAIN_CUTOVER.md.')
   }
   if (process.env.FLEED_REQUIRE_CLOUDFLARE === '1' && !summary.cloudflare_ray_present) {
     console.error('Cloudflare hosting verification failed: CF-Ray header absent.')

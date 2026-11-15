@@ -53,8 +53,11 @@ Wrangler configuration lives in `wrangler.jsonc`. Production D1 is **not** your 
 
 ## Architecture and operations
 
+- [Product direction and user experience](docs/PRODUCT_DIRECTION.md)
 - [System architecture](docs/ARCHITECTURE.md)
 - [Engineering log and decisions](docs/ENGINEERING_LOG.md)
+- [Portfolio case study and CV evidence](docs/CASE_STUDY.md)
+- [Secure media feature design (not deployed)](docs/MEDIA_DESIGN.md)
 - [Release and deployment checklist](docs/OPERATIONS.md)
 - [Read-only Fleed MCP development tools](tools/fleed-mcp/README.md)
 

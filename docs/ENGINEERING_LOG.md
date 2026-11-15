@@ -110,3 +110,12 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 ### CI follow-up — portable backup UI
 
 - CI run 43750305348 failed TypeScript at `Customize.tsx:71` due to a conflicting `append(...)` signature in the project types. Replaced it with `appendChild(...)`, which has the standard DOM node contract. A fresh CI run must verify the correction.
+
+### Product and release preparation
+
+- Renamed root npm package from the generic `basic` to `fleed` for consistency (deployment Worker name already `fleed`).
+- Wrote `docs/PRODUCT_DIRECTION.md`: clear user value, priorities, UX, product boundaries, and optional AI feature criteria.
+- Wrote `docs/MEDIA_DESIGN.md`: R2 auth, size/type validation, quotas, anti-abuse and account approval gates. Does not activate storage.
+- Wrote `docs/CASE_STUDY.md`: interview/CV-ready evidence with honest unshipped-feature boundaries.
+- Added a visible GitHub Actions warning annotation when `fleed.online` still presents Netlify origin headers, without treating basic uptime as failed.
+- Current review branch remains draft; no DNS, Worker production deployment, billing, R2 or D1 remote operations performed.
