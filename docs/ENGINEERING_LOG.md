@@ -23,7 +23,7 @@
 - Add architecture, release checklist, and this engineering record.
 - Add Node regression tests for input normalisation, safe links and image URL validation.
 - Execute those tests as part of existing GitHub Actions CI.
-- Add a standalone read-only TypeScript MCP development server and optional VS Code configuration.
+- Add a standalone read-only TypeScript MCP development server and optional VS Code configuration (SDK v2, fixed Cloudflare read endpoints and fixed SQL).
 
 ### Verification
 
