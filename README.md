@@ -10,10 +10,10 @@ Fleed is a full-stack web application for creating, previewing and publishing pe
 ## Working features
 
 - In-place editing for identity, skills, projects, experience, contact details and custom sections.
-- Browser-saved drafts; separate visitor preview and editor views.
+- Browser-saved drafts with optional JSON export/import; separate visitor preview and editor views.
 - Five core colour palettes, multiple typography choices and adjustable layout.
 - Shareable published portfolio links (`/p/<id>`).
-- Cloudflare D1 persistence with SHA-256-hashed edit credentials for subsequent updates.
+- Cloudflare D1 persistence with SHA-256-hashed edit credentials for subsequent updates; invalid update credentials are rejected rather than silently creating a replacement portfolio.
 - Responsive React interface with accessibility and reduced-motion considerations.
 
 ## Current limitations

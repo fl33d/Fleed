@@ -97,3 +97,12 @@ Old Git history will still contain prior Netlify references; removing a tracked 
 - GitHub Actions `Fleed CI` run 43742793959: **success**. Existing app installation, type generation, typechecking, regression tests, production build, standalone MCP install/typecheck and MCP stdio self-test all completed.
 - GitHub Actions `Fleed Live Site Health` run 43742793969: **success**. Its diagnostics additionally requested `https://fleed.fleed.workers.dev/p/000000000000` and received HTTP 404 with Cloudflare server and CF-Ray headers — expected for an invalid portfolio ID. This is a non-mutating route check, not proof that database writes or authenticated publishing work.
 - PR #1 remains a draft based on `main`. All code/doc automation changes are on `improve/cloudflare-security-mcp-2026-11-15`, not deployed. `fleed.online` still presents Netlify origin headers.
+
+### Portfolio update integrity and user-controlled draft backup — 2026-11-15
+
+- Added a small, testable credential-classification module. Only a request with **both** ID and token absent creates a new portfolio. A partial or invalid credential pair now rejects the update instead of silently creating another public portfolio.
+- Updated D1 write flow to verify the stored edit-token hash and confirm one updated row before returning success.
+- Added unit tests for create/update intent, invalid credentials and hash comparison.
+- Added JSON draft export/import in the editor customisation panel; export intentionally excludes the sensitive published edit token.
+- Import requires explicit confirmation. The published page changes only if the user subsequently selects Update.
+- Not merged to production; CI must pass before shipping.

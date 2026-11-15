@@ -156,7 +156,7 @@ function Editor() {
       localStorage.setItem(PUBLISHED_KEY, JSON.stringify(result))
       setShareOpen(true)
     } catch {
-      toast.error('Publishing failed. Try again in a moment.')
+      toast.error('Publishing failed. Your draft is saved. If updating, check your edit permission.')
     } finally {
       setPublishing(false)
     }
